@@ -1,0 +1,40 @@
+# TRIT-TRT Default Configuration
+# Yunis AI — Sovereign Ternary Inference
+# ──────────────────────────────────────
+
+model_id: "microsoft/BitNet-b1.58-2B-4T"
+device: auto          # auto | cpu | cuda | mps
+seed: 42
+verbose: true
+
+# ── Layer 1: BitNet Ternary Substrate ─────────────
+bitnet:
+  quant_type: i2_s    # i2_s (x86) | tl1 (ARM) | tl2 (ARM alt)
+  threads: 4          # CPU threads for inference
+  ctx_size: 2048      # Context window size
+  temperature: 0.6    # Default sampling temperature
+  quant_embd: false   # Quantize embeddings to f16
+  use_pretuned: true  # Use pretuned kernel parameters
+  model_dir: ~/.yunisa/models  # Pre-existing GGUF model
+
+# ── Layer 2: AirLLM Sovereign Inference ───────────
+airllm:
+  max_vram_gb: 4.0       # VRAM budget (4GB = single low-end GPU)
+  compression: "4bit"     # none | 4bit | 8bit (block-wise quantization)
+  prefetch: true          # Overlap layer loading with compute
+  delete_original: false  # Delete original model after sharding
+  # layer_shards_path:    # Custom path for layer shards
+  # hf_token:             # HuggingFace token for gated models
+  profiling_mode: false   # Output timing information
+
+# ── Layer 3: TRT Dialectical Reasoning ────────────
+trt:
+  rounds: 3                          # Max TRT iteration rounds
+  candidates_per_round: 8            # Solutions generated per round
+  selection_method: self_consistency  # self_consistency | verification | hybrid
+  reflection_depth: standard         # minimal | standard | deep
+  early_stop_threshold: 0.95         # Stop if confidence reaches this
+  knowledge_persistence: true        # Carry insights across prompts
+  max_knowledge_entries: 50          # Max stored insights
+  reflection_max_tokens: 1024        # Tokens for reflection phase
+  candidate_max_tokens: 2048         # Tokens per candidate response

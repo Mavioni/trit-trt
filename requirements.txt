@@ -1,0 +1,28 @@
+# TRIT-TRT: Ternary Recursive Inference Thinking
+# Core dependencies
+torch>=2.0.0
+transformers>=4.36.0
+safetensors>=0.4.0
+huggingface-hub>=0.19.0
+
+# AirLLM layer sharding
+airllm>=2.11.0
+bitsandbytes>=0.41.0
+
+# TRT knowledge flow
+orjson>=3.9.0
+aiofiles>=23.2.0
+
+# Inference
+accelerate>=0.25.0
+sentencepiece>=0.1.99
+
+# Configuration
+pyyaml>=6.0
+pydantic>=2.0
+
+# Utilities
+tqdm>=4.66.0
+colorama>=0.4.6
+psutil>=5.9.0
+numpy>=1.24.0

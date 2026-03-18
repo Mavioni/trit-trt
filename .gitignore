@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.gguf
+.env
+.env.local
+*.lock
+.cache/
+logs/
