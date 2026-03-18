@@ -7,7 +7,93 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div id="app">TRIT-TRT loading...</div>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header-title">TRIT-TRT</h1>
+        <div class="header-actions">
+            <span id="connection-status" class="connection-status disconnected">disconnected</span>
+            <button id="knowledge-btn" class="header-btn" title="Knowledge Store">
+                Knowledge <span id="knowledge-badge" class="badge">0</span>
+            </button>
+            <button id="settings-btn" class="header-btn" title="Settings">Settings</button>
+        </div>
+    </header>
+
+    <!-- Chat area -->
+    <main id="chat" class="chat"></main>
+
+    <!-- Input bar -->
+    <footer class="input-bar">
+        <textarea id="prompt-input" class="prompt-input" placeholder="Type a prompt..." rows="1"></textarea>
+        <button id="send-btn" class="send-btn">Send</button>
+    </footer>
+
+    <!-- Settings panel -->
+    <div id="settings-backdrop" class="panel-backdrop hidden"></div>
+    <aside id="settings-panel" class="panel hidden">
+        <div class="panel-header">
+            <h2>Settings</h2>
+            <button id="settings-close" class="panel-close">Close</button>
+        </div>
+        <div class="panel-body">
+            <label class="setting">
+                <span class="setting-label">TRT Rounds</span>
+                <input type="range" id="setting-rounds" min="1" max="5" value="3" step="1">
+                <span class="setting-value" data-for="setting-rounds">3</span>
+            </label>
+            <label class="setting">
+                <span class="setting-label">Candidates / Round</span>
+                <input type="range" id="setting-candidates" min="2" max="16" value="8" step="1">
+                <span class="setting-value" data-for="setting-candidates">8</span>
+            </label>
+            <label class="setting">
+                <span class="setting-label">Max Tokens</span>
+                <input type="range" id="setting-max-tokens" min="64" max="2048" value="512" step="64">
+                <span class="setting-value" data-for="setting-max-tokens">512</span>
+            </label>
+            <label class="setting">
+                <span class="setting-label">Temperature</span>
+                <input type="range" id="setting-temperature" min="0.1" max="1.5" value="0.6" step="0.1">
+                <span class="setting-value" data-for="setting-temperature">0.6</span>
+            </label>
+            <label class="setting">
+                <span class="setting-label">Selection Method</span>
+                <select id="setting-selection-method">
+                    <option value="self_consistency" selected>Self Consistency</option>
+                    <option value="verification">Verification</option>
+                    <option value="hybrid">Hybrid</option>
+                </select>
+            </label>
+            <label class="setting">
+                <span class="setting-label">Reflection Depth</span>
+                <select id="setting-reflection-depth">
+                    <option value="minimal">Minimal</option>
+                    <option value="standard" selected>Standard</option>
+                    <option value="deep">Deep</option>
+                </select>
+            </label>
+            <label class="setting">
+                <span class="setting-label">Early Stop Threshold</span>
+                <input type="range" id="setting-early-stop" min="0.5" max="1.0" value="0.95" step="0.05">
+                <span class="setting-value" data-for="setting-early-stop">0.95</span>
+            </label>
+            <label class="setting setting-row">
+                <span class="setting-label">Knowledge Persistence</span>
+                <input type="checkbox" id="setting-knowledge-persistence" checked>
+            </label>
+        </div>
+    </aside>
+
+    <!-- Knowledge panel -->
+    <div id="knowledge-backdrop" class="panel-backdrop hidden"></div>
+    <aside id="knowledge-panel" class="panel hidden">
+        <div class="panel-header">
+            <h2>Knowledge Store</h2>
+            <button id="knowledge-close" class="panel-close">Close</button>
+        </div>
+        <div id="knowledge-list" class="panel-body"></div>
+    </aside>
+
     <script src="/static/main.js"></script>
 </body>
 </html>
