@@ -138,7 +138,9 @@ async def _handle_generate(ws: WebSocket, data: dict) -> None:
     )
 
     # Get backend and optionally set temperature
+    await ws.send_json({"type": "status", "phase": "loading"})
     backend = _get_backend()
+    await ws.send_json({"type": "status", "phase": "ready"})
     if temperature is not None and hasattr(backend, "_bitnet") and backend._bitnet is not None:
         backend._bitnet.config.temperature = temperature
 
