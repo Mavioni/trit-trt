@@ -1,6 +1,8 @@
 """Tests for the TRIT-TRT Web UI components."""
 
 import pytest
+from unittest.mock import patch
+from fastapi.testclient import TestClient
 from trit_trt.trt_engine import TRTEngine
 from trit_trt.config import TRTConfig, SelectionMethod, ReflectionDepth
 from tests.test_engine import MockGenerator
@@ -53,3 +55,35 @@ class TestStreamingTRTEngine:
         event_types = [e["type"] for e in events]
         assert "cancelled" in event_types
         assert result.rounds_used <= 1
+
+
+# ─── WebSocket Tests ─────────────────────────────────────────
+
+
+class TestWebSocket:
+    def test_health_endpoint(self):
+        from ui.app import app
+        client = TestClient(app)
+        response = client.get("/health")
+        assert response.status_code == 200
+        assert response.json()["status"] == "ok"
+
+    def test_websocket_generates_with_mock(self):
+        from ui.app import app
+        client = TestClient(app)
+        mock_gen = MockGenerator()
+        with patch("ui.app._get_backend", return_value=mock_gen):
+            with client.websocket_connect("/ws") as ws:
+                ws.send_json({
+                    "type": "generate",
+                    "prompt": "test",
+                    "settings": {"rounds": 1, "candidates": 2, "reflection_depth": "minimal"},
+                })
+                events = []
+                while True:
+                    event = ws.receive_json()
+                    events.append(event)
+                    if event["type"] in ("result", "error", "cancelled"):
+                        break
+                assert len(events) > 0
+                assert any(e["type"] == "result" for e in events)
